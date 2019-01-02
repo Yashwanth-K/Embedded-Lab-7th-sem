@@ -1,0 +1,19 @@
+NAME    main
+        
+        PUBLIC  __iar_program_start
+        SECTION Ddatas:CONST(2)
+NUM DC32 0X3
+        
+        SECTION .intvec:CODE:NOROOT (2)
+
+__iar_program_start
+
+MAIN
+       LDR R6,NUM		
+       MOV R4,R6
+LOOP   SUBS R4,R4,#1
+       MULNE R6,R4,R6
+       BNE LOOP
+               
+STOP    B STOP
+  END

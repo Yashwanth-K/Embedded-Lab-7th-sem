@@ -1,0 +1,31 @@
+	NAME    main
+        
+        PUBLIC  __iar_program_start
+       
+        SECTION datas:CONST(2)
+
+STRING DCB 'MADAM'
+STREND DCB 0
+LEN DCD (STREND - STRING)
+
+ SECTION .intvec:CODE:NOROOT(2)
+ 
+__iar_program_start
+
+main
+    LDR R5,LEN
+    LDR R0,=STRING
+    MOV R1,R0
+    ADD R1,R1,R5
+    SUB R1,R1,#1
+LOOP CMP R1,R0
+    BMI PALI
+    LDRB R2,[R0],#1
+    LDRB R3,[R1],#-1
+    CMP R2,R3
+    BEQ LOOP
+NOTPALI MOV R10,#0
+    B STOP
+PALI MOV R10,#0XFF
+STOP B STOP
+  end 

@@ -1,0 +1,42 @@
+      NAME main    
+      PUBLIC  __iar_program_start
+      SECTION .DATA:CONST:NOROOT (2)
+mydata:
+        DC32 0X11111111, 0X66666666, 0X22222222  
+mydataend: 
+     DC32 0x00 
+length:
+        DC32 (mydataend-mydata)/4        
+      SECTION .intvec:CODE:NOROOT (2)
+
+__iar_program_start
+
+main
+              
+        ldr R0, length              
+        sub R0, R0, #1              
+        mov R5, R0             
+        ldr R1, =mydata
+LOOP2                   
+        mov R0, R5             
+        mov R2, R1              
+        add R2, R2, #4
+L1                  
+        ldr R3, [R1]              
+        ldr R4, [R2]             
+        cmp R3, R4              
+        bls LOOP1              
+        swp R3, R4, [R1]		;same as str R4,[R1]              
+        str R3, [R2]
+LOOP1         
+        add R2, R2, #4              
+        subs R0, R0, #1              
+        bhi L1              
+        add R1, R1, #4              
+        subs R5, R5, #1              
+        bgt LOOP2
+                
+stop b stop 
+       END
+
+

@@ -1,0 +1,61 @@
+        NAME    main
+        
+        PUBLIC  __iar_program_start
+        SECTION datas:CONST(2)
+
+n dc32  0xa
+r dc32  0x6
+
+quotient dcd 0x0,0x0,0x0
+remain   dcd 0x0     
+            
+        SECTION .intvec:CODE:NOROOT (2)
+
+__iar_program_start
+main
+
+            ldr r0,n
+            ldr r1,r
+            MOV R2,R1
+            add r2,r2,#1
+            MOV R6,#1
+            MOV R7,#1
+            MOV R3,#0
+            bl FACT
+            
+            bl FACT2           
+            bl div
+            
+stop        b stop
+                
+FACT       
+            MULNE R6,R0,R6
+            SUB R0,R0,#1
+            SUBS R1,R1,#1
+            BNE	FACT
+            MOV PC,LR  
+    
+FACT2       
+            MULNE R7,R2,R7
+            SUBS R2,R2,#1
+            BNE FACT2
+            MOV PC,LR
+           
+div         
+loop
+            cmp r7,#0
+            beq err
+            SUBS R6,R6,R7
+            blt done
+            ADD R3,R3,#1
+            b loop
+err
+            mov r3,#0xffffffff
+done
+           ldr R2,=remain
+           ldr r4,=quotient
+           str r6,[r2]
+           str r3,[r4] 
+           mov pc,lr
+
+           END
